@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Заказ билетов{% endblock title %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .logo a { display: inline-flex; align-items: center; gap: 8px; color: black; font-size: 16pt; font-weight: bold; text-decoration: none; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #999999; padding: 4px 8px; text-align: left; vertical-align: top; }
+        .errorlist { color: red; }
+    </style>
+</head>
+<body>
+<div class="logo">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'images/logo.svg' %}" width="40" height="40" alt="Логотип ЯрБусТут">
+        <span>ЯрБусТут</span>
+    </a>
+</div>
+<p>
+    <a href="{% url 'home' %}">Расписание</a> |
+    <a href="{% url 'order_new' %}">Купить билет</a>
+</p>
+<hr>
+<h1>{% block header %}{% endblock header %}</h1>
+{% block content %}{% endblock content %}
+</body>
+</html>

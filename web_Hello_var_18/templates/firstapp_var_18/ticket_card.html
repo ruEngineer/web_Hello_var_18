@@ -1,0 +1,5 @@
+<table>
+    {% for key, value in order.items %}
+    <tr><td>{{ key }}</td><td>{{ value|default:"—" }}</td></tr>
+    {% endfor %}
+</table>

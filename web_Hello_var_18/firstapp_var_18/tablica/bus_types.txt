@@ -1,0 +1,16 @@
+Mercedes-Benz Tourismo;49;туристический
+Setra S 515 HD;50;туристический
+MAN Lion's Coach;51;туристический
+Neoplan Tourliner;49;туристический
+Scania Touring;51;туристический
+Volvo 9700;53;туристический
+Higer KLQ6128;55;междугородний
+Yutong ZK6122;53;междугородний
+King Long XMQ6127;53;междугородний
+Golden Dragon XML6126;51;междугородний
+ПАЗ-4234;30;пригородный
+ЛиАЗ-5256;44;пригородный
+НефАЗ-5299;40;пригородный
+Mercedes-Benz Sprinter;19;микроавтобус
+Ford Transit;18;микроавтобус
+ГАЗель Next;17;микроавтобус

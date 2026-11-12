@@ -1,0 +1,15 @@
+{% extends "firstapp_var_18/base.html" %}
+{% block title %}Рейс {{ route.number }}{% endblock title %}
+{% block header %}Рейс № {{ route.number }}: {{ route.from_city }} → {{ route.to_city }}{% endblock header %}
+{% block content %}
+<table>
+    <tr><td>Отправление</td><td>{{ route.departure }}</td></tr>
+    <tr><td>В пути</td><td>{{ route.duration }} ч</td></tr>
+    <tr><td>Цена</td><td>{{ route.price }} ₽</td></tr>
+    <tr><td>Дни отправления</td><td>{{ route.days_list|join:", " }}</td></tr>
+    <tr><td>Автобус</td><td>{{ route.bus }}{% if bus %} — {{ bus.seats }} мест, {{ bus.kind }}{% endif %}</td></tr>
+</table>
+{% if bus %}<p><a href="{% url 'buses_kind' bus.kind %}">Другие автобусы этого вида</a></p>{% endif %}
+<p><a href="{% url 'order_new' %}?route={{ route.number }}">Купить билет на этот рейс</a></p>
+<p><a href="{% url 'home' %}">Назад к расписанию</a></p>
+{% endblock content %}

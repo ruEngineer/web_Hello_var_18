@@ -1,0 +1,7 @@
+{% extends "firstapp_var_18/base.html" %}
+{% block title %}Расписание{% endblock title %}
+{% block header %}Расписание рейсов{% endblock header %}
+{% block content %}
+<p>{{ subtitle|default:"Все направления" }}. Рейсов: {{ routes|length }}</p>
+{% include "firstapp_var_18/_routes_table.html" %}
+{% endblock content %}

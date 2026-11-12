@@ -1,0 +1,8 @@
+{% extends "firstapp_var_18/base.html" %}
+{% block title %}Заказ оформлен{% endblock title %}
+{% block header %}Заказ № {{ number }} оформлен{% endblock header %}
+{% block content %}
+<p>Билет сохранён. Назовите его номер при посадке в автобус.</p>
+{% include "firstapp_var_18/ticket_card.html" %}
+<p><a href="{% url 'orders' %}">Все заказы</a> | <a href="{% url 'order_new' %}">Купить ещё билет</a></p>
+{% endblock content %}

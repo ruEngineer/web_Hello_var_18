@@ -1,0 +1,17 @@
+{% extends "firstapp_var_18/base.html" %}
+{% block title %}Заказы{% endblock title %}
+{% block header %}Заказы билетов{% endblock header %}
+{% block content %}
+<p>Всего заказов: {{ rows|length }}. <a href="{% url 'order_new' %}">Новый заказ</a></p>
+<table>
+    <thead>{% for h in header %}<th>{{ h }}</th>{% endfor %}</thead>
+    {% for row in rows %}
+    <tr>
+        {% for cell in row %}
+        {% if forloop.first %}<td>{{ cell }}</td>
+        {% else %}<td>{{ cell|default:"—" }}</td>{% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock content %}

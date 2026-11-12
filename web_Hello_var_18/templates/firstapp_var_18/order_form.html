@@ -1,0 +1,13 @@
+{% extends "firstapp_var_18/base.html" %}
+{% block title %}Покупка билета{% endblock title %}
+{% block header %}Покупка билета{% endblock header %}
+{% block content %}
+<h2>Заполните данные пассажира и выберите рейс</h2>
+<form method="post" novalidate>
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" value="Оформить заказ" />
+</form>
+{% endblock content %}
