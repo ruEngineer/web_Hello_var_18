@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Автобусы</title>
+</head>
+<body>
+    <!-- Форма создания -->
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>
+            <label>Название автобуса:</label><br>
+            <input type="text" name="name" required/>
+        </p>
+        <p>
+            <label>Количество мест:</label><br>
+            <input type="number" name="mest" required/>
+        </p>
+        <input type="submit" value="Сохранить">
+    </form>
+
+    <h2>Список автобусов :</h2>
+    <table cellspacing="10">
+        <thead>
+            <tr>
+                <th align="left">Id</th>
+                <th align="left">Название</th>
+                <th align="left">Мест</th>
+                <th align="left"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bus in bus_list %}
+            <tr>
+                <td>{{ bus.id }}</td>
+                <td>{{ bus.name }}</td>
+                <td>{{ bus.mest }}</td>
+                <td>
+                    <a href="/edit/{{ bus.id }}/">Изменить</a> |
+                    <a href="/delete/{{ bus.id }}/">Удалить</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Автобусов пока нет.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

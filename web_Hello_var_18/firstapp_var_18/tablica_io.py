@@ -79,10 +79,11 @@ def _append_order(data):
     ws = wb.active
     numbers = [c.value for c in ws['A'][1:] if isinstance(c.value, int)]
     number = max(numbers, default=1000) + 1
+
     ws.append([
         number, date.today().isoformat(), data['passenger'], data['phone'], data['route'],
-        data['travel_date'].isoformat(), data['day'], data['seats'], data['total'],
-        data['operator'], ', '.join(data['extras']),
+        data['travel_date'].isoformat(), '', data['seats'], data['total'],
+        '', ', '.join(data['extras']),
     ])
     wb.save(path)
     return number

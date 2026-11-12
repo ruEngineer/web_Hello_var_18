@@ -1,12 +1,15 @@
 <p>
-    Дни:
-    {% if active_day %}<a href="{% url 'home' %}">Все</a>{% else %}<b>Все</b>{% endif %}
-    {% for num, day in week.items %}
-    | {% if num == active_day %}<b>{{ day.1 }}</b>{% else %}<a href="{% url 'routes_by_day' num %}">{{ day.1 }}</a>{% endif %}
-    {% endfor %}
 </p>
 <table>
-    <thead><th>№</th><th>Маршрут</th><th>Отправление</th><th>В пути</th><th>Автобус</th><th>Дни</th><th>Цена</th><th></th></thead>
+    <thead>
+        <th>№</th>
+        <th>Маршрут</th>
+        <th>Отправление</th>
+        <th>В пути</th>
+        <th>Автобус</th>
+        <th>Цена</th>
+        <th></th>
+    </thead>
     {% for r in routes %}
     <tr>
         <td><a href="{% url 'route_detail' r.number %}">{{ r.number }}</a></td>
@@ -14,11 +17,10 @@
         <td>{{ r.departure }}</td>
         <td>{{ r.duration }} ч</td>
         <td>{{ r.bus }}</td>
-        <td>{{ r.days }}</td>
         <td>{{ r.price }} ₽</td>
         <td><a href="{% url 'order_new' %}?route={{ r.number }}">Купить</a></td>
     </tr>
     {% empty %}
-    <tr><td colspan="8">Рейсов не найдено</td></tr>
+    <tr><td colspan="7">Рейсов не найдено</td></tr>
     {% endfor %}
 </table>

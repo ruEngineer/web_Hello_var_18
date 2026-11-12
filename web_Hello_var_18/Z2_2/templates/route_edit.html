@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Редактировать</title></head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <p>Номер: <input type="text" name="number" value="{{ route.number }}"></p>
+        <p>Откуда: <input type="text" name="from_city" value="{{ route.from_city }}"></p>
+        <p>Куда: <input type="text" name="to_city" value="{{ route.to_city }}"></p>
+        <p>Цена: <input type="number" name="price" value="{{ route.price }}"></p>
+        <input type="submit" value="Сохранить">
+    </form>
+    <br>
+    <a href="/">← Вернуться к списку маршрутов</a>
+</body>
+</html>

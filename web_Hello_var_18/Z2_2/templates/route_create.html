@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Маршруты</title></head>
+<body>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>Номер: <input type="text" name="number" required></p>
+        <p>Откуда: <input type="text" name="from_city" required></p>
+        <p>Куда: <input type="text" name="to_city" required></p>
+        <p>Цена: <input type="number" name="price" required></p>
+        <input type="submit" value="Сохранить">
+    </form>
+
+    <h2>Список маршрутов :</h2>
+    <p><a href="/trips/">Перейти к рейсам →</a></p>
+
+    <table cellspacing="10">
+        <tr>
+            <th align="left">Id</th><th align="left">Номер</th><th align="left">Откуда</th><th align="left">Куда</th><th align="left">Цена</th>
+        </tr>
+        {% for route in routes %}
+        <tr>
+            <td>{{ route.id }}</td>
+            <td>{{ route.number }}</td>
+            <td>{{ route.from_city }}</td>
+            <td>{{ route.to_city }}</td>
+            <td>{{ route.price }}</td>
+            <td>
+                <a href="/edit/{{ route.id }}/">Изменить</a> |
+                <a href="/delete/{{ route.id }}/">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

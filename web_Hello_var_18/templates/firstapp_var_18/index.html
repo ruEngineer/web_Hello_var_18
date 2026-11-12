@@ -2,13 +2,6 @@
 {% block title %}Расписание · {{ company }}{% endblock title %}
 {% block header %}Расписание автобусов{% endblock header %}
 {% block content %}
-<p>{{ company }} — междугородние рейсы. Сегодня {{ today|date:"j E Y" }}, рейсов в расписании: {{ routes_count }}.</p>
 {% include "firstapp_var_18/_routes_table.html" %}
 
-<p>Средняя цена билета: {{ avg_price }} ₽</p>
-<p>Оформлено заказов: {{ orders_count }}</p>
-<p>Кассы на вокзале: {{ is_open|yesno:"открыты,закрыты" }}</p>
-{% if popular %}
-<p>Популярный рейс: <a href="{% url 'route_detail' popular.number %}">{{ popular.number }} {{ popular.from_city }} → {{ popular.to_city }}</a>, {{ popular.price }} ₽</p>
-{% endif %}
 {% endblock content %}

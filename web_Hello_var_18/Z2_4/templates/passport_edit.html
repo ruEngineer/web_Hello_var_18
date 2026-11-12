@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Редактировать паспорт</title></head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <p>Автобус: <b>{{ passport.bus.name }}</b></p>
+        <p>Серийный номер: <input type="text" name="serial_number" value="{{ passport.serial_number }}"></p>
+        <p>Дата выдачи: <input type="date" name="issue_date" value="{{ passport.issue_date|date:'Y-m-d' }}"></p>
+        <input type="submit" value="Сохранить">
+    </form>
+    <br><a href="/">← Назад к списку</a>
+</body>
+</html>

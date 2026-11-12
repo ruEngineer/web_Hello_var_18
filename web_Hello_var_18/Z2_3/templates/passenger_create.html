@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Пассажиры</title></head>
+<body>
+    <h2>Добавить пассажира</h2>
+    <p><a href="/">← На главную (к билетам)</a></p>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>ФИО: <input type="text" name="full_name" required></p>
+        <p>Телефон: <input type="text" name="phone" required></p>
+        <input type="submit" value="Сохранить">
+    </form>
+
+    <h2>Список пассажиров :</h2>
+    <table cellspacing="10">
+        <tr><th align="left">Id</th><th align="left">ФИО</th><th align="left">Телефон</th><th></th></tr>
+        {% for p in passengers %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.full_name }}</td>
+            <td>{{ p.phone }}</td>
+            <td><a href="/passengers/delete/{{ p.id }}/">Удалить</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

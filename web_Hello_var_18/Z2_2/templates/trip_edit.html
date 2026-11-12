@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Редактировать рейс</title></head>
+<body>
+    <form method="POST">
+        {% csrf_token %}
+        <p>Маршрут:
+            <select name="route">
+                {% for route in routes %}
+                <option value="{{ route.id }}" {% if route.id == trip.route.id %}selected{% endif %}>
+                    {{ route.number }} ({{ route.from_city }}-{{ route.to_city }})
+                </option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Время: <input type="text" name="departure_time" value="{{ trip.departure_time }}" required></p>
+        <p>Автобус: <input type="text" name="bus_name" value="{{ trip.bus_name }}" required></p>
+        <input type="submit" value="Сохранить">
+    </form>
+    <br>
+    <a href="/trips/">← Назад к списку рейсов</a>
+</body>
+</html>

@@ -36,6 +36,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'firstapp_var_18',
+    'firstapp_var_18_z2_1',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,13 @@ WSGI_APPLICATION = 'web_Hello_var_18.wsgi.application'
 
 # Database: в задаче Z1 данные хранятся в файлах папки tablica, база данных не используется
 
-DATABASES = {}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+
+}
 
 
 # Internationalization

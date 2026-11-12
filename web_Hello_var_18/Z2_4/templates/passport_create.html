@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Техпаспорта</title></head>
+<body>
+    <h2>Выдать техпаспорт</h2>
+    <p><a href="/buses/">Управление автобусами</a></p>
+
+    {% if free_buses %}
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>Автобус:
+            <select name="bus">
+                {% for b in free_buses %}
+                <option value="{{ b.id }}">{{ b.name }} ({{ b.mest }} мест)</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Серийный номер: <input type="text" name="serial_number" required></p>
+        <p>Дата выдачи: <input type="date" name="issue_date" required></p>
+        <input type="submit" value="Выдать паспорт">
+    </form>
+    {% else %}
+    <p>Все автобусы уже имеют паспорта. <a href="/buses/">Добавьте новый автобус</a>.</p>
+    {% endif %}
+
+    <h2>Список техпаспортов :</h2>
+    <table cellspacing="10">
+        <tr>
+            <th align="left">ID автобуса</th><th align="left">Автобус</th><th align="left">Серийный номер</th><th align="left">Дата выдачи</th><th></th>
+        </tr>
+        {% for p in passports %}
+        <tr>
+            <td>{{ p.bus.id }}</td>
+            <td>{{ p.bus.name }}</td>
+            <td>{{ p.serial_number }}</td>
+            <td>{{ p.issue_date|date:"d.m.Y" }}</td>
+            <td>
+                <a href="/passports/edit/{{ p.bus.id }}/">Изменить</a> |
+                <a href="/passports/delete/{{ p.bus.id }}/">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

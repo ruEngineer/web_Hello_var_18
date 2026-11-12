@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Автобусы</title></head>
+<body>
+    <h2>Добавить автобус</h2>
+    <p><a href="/">← Назад к паспортам</a></p>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>Название: <input type="text" name="name" required></p>
+        <p>Мест: <input type="number" name="mest" required></p>
+        <input type="submit" value="Сохранить">
+    </form>
+
+    <h2>Список автобусов :</h2>
+    <table cellspacing="10">
+        <tr><th align="left">Id</th><th align="left">Название</th><th align="left">Мест</th><th></th></tr>
+        {% for b in buses %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.name }}</td>
+            <td>{{ b.mest }}</td>
+            <td>
+                <a href="/buses/edit/{{ b.id }}/">Изменить</a> |
+                <a href="/buses/delete/{{ b.id }}/">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

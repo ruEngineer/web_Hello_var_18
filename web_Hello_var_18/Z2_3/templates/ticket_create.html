@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><meta charset="UTF-8"><title>Билеты</title></head>
+<body>
+    <h2>Продажа билета</h2>
+    <!-- Ссылки на управление справочниками -->
+    <p><a href="/passengers/">Управление пассажирами</a> | <a href="/trips/">Управление рейсами</a></p>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <p>Пассажир:
+            <select name="passenger">
+                {% for p in passengers %}
+                <option value="{{ p.id }}">{{ p.full_name }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Рейс:
+            <select name="trip">
+                {% for t in trips %}
+                <option value="{{ t.id }}">{{ t.name }} ({{ t.price }} ₽)</option>
+                {% endfor %}
+            </select>
+        </p>
+        <p>Место: <input type="number" name="seat" required></p>
+        <input type="submit" value="Продать билет">
+    </form>
+
+    <h2>Проданные билеты :</h2>
+    <table cellspacing="10">
+        <tr>
+            <th align="left">Id</th><th align="left">Пассажир</th><th align="left">Рейс</th><th align="left">Место</th><th></th>
+        </tr>
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.passenger.full_name }}</td>
+            <td>{{ ticket.trip.name }}</td>
+            <td>{{ ticket.seat }}</td>
+            <td><a href="/tickets/delete/{{ ticket.id }}/">Удалить</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
