@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Техпаспорта — Билетная касса{% endblock %}
+{% block header %}Техпаспорта автобусов{% endblock %}
+{% block page_actions %}
+<a class="btn" href="{% url 'buspassport_create' %}">Выдать техпаспорт</a>
+{% endblock %}
+
+{% block content %}
+<div class="panel" style="margin-bottom: 18px;">
+    <strong>Связь один к одному.</strong>
+    <span class="muted">У каждого автобуса может быть только один техпаспорт.</span>
+</div>
+
+{% if passports %}
+<div class="table-wrap">
+    <table class="data">
+        <tr>
+            <th>Серийный номер</th>
+            <th>Автобус</th>
+            <th>Дата выдачи</th>
+            <th>Действителен до</th>
+            <th>Регистрация</th>
+            <th>Скан</th>
+            <th></th>
+        </tr>
+        {% for passport in passports %}
+        <tr>
+            <td><strong>{{ passport.serial_number }}</strong></td>
+            <td>{{ passport.bus.model_name }}<br><span class="muted">{{ passport.bus.plate_number }}</span></td>
+            <td>{{ passport.issue_date|date:"d.m.Y" }}</td>
+            <td>{{ passport.valid_until|date:"d.m.Y" }}</td>
+            <td>
+                {% if passport.registered %}
+                <span class="badge badge-ok">зарегистрирован</span>
+                {% else %}
+                <span class="badge badge-off">не зарегистрирован</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if passport.scan %}
+                <a href="{{ passport.scan.url }}" target="_blank">открыть</a>
+                {% else %}
+                <span class="muted">—</span>
+                {% endif %}
+            </td>
+            <td class="link-actions">
+                <a href="{% url 'buspassport_edit' passport.pk %}">Изменить</a> |
+                <a class="del" href="{% url 'buspassport_delete' passport.pk %}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% else %}
+<p class="empty">Техпаспортов пока нет. <a href="{% url 'buspassport_create' %}">Выдать первый</a></p>
+{% endif %}
+{% endblock %}

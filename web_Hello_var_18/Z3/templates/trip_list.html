@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Рейсы — Билетная касса{% endblock %}
+{% block header %}Рейсы{% endblock %}
+{% block page_actions %}
+<a class="btn" href="{% url 'trip_create' %}">Добавить рейс</a>
+{% endblock %}
+
+{% block content %}
+{% if trips %}
+<div class="table-wrap">
+    <table class="data">
+        <tr>
+            <th>Автобус</th>
+            <th>Направление</th>
+            <th>Дата</th>
+            <th>Время</th>
+            <th>Цена</th>
+            <th>Время в пути</th>
+            <th>Продано</th>
+            <th></th>
+        </tr>
+        {% for trip in trips %}
+        <tr>
+            <td>{{ trip.bus.model_name }}<br><span class="muted">{{ trip.bus.plate_number }}</span></td>
+            <td><strong>{{ trip.from_city }} — {{ trip.to_city }}</strong></td>
+            <td>{{ trip.departure_date|date:"d.m.Y" }}</td>
+            <td>{{ trip.departure_time|time:"H:i" }}</td>
+            <td>{{ trip.price|floatformat:2 }} ₽</td>
+            <td>{{ trip.travel_time|time:"H:i" }}</td>
+            <td>{{ trip.tickets_count }} / {{ trip.bus.seats }}</td>
+            <td class="link-actions">
+                <a href="{% url 'trip_edit' trip.pk %}">Изменить</a> |
+                <a class="del" href="{% url 'trip_delete' trip.pk %}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% else %}
+<p class="empty">Рейсов пока нет. <a href="{% url 'trip_create' %}">Добавить первый</a></p>
+{% endif %}
+{% endblock %}

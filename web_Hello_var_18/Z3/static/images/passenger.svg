@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-label="Фото пассажира не загружено">
+  <rect width="300" height="300" rx="18" fill="#e9f1f7"/>
+  <circle cx="150" cy="112" r="54" fill="#b9cfdf"/>
+  <path d="M60 266c0-54 40-88 90-88s90 34 90 88z" fill="#b9cfdf"/>
+  <circle cx="150" cy="112" r="38" fill="#dceaf4"/>
+  <path d="M76 258c6-40 36-64 74-64s68 24 74 64z" fill="#dceaf4"/>
+  <text x="150" y="292" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#6b869c">Нет фотографии</text>
+</svg>

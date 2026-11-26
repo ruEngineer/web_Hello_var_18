@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Пассажиры — Билетная касса{% endblock %}
+{% block header %}Пассажиры{% endblock %}
+{% block page_actions %}
+<a class="btn" href="{% url 'passenger_create' %}">Добавить пассажира</a>
+{% endblock %}
+
+{% block content %}
+{% if passengers %}
+<div class="table-wrap">
+    <table class="data">
+        <tr>
+            <th>Фото</th>
+            <th>ФИО</th>
+            <th>Телефон</th>
+            <th>Почта</th>
+            <th>Дата рождения</th>
+            <th></th>
+        </tr>
+        {% for passenger in passengers %}
+        <tr>
+            <td>
+                {% if passenger.photo %}
+                <img class="avatar" src="{{ passenger.photo.url }}" alt="Фото {{ passenger.full_name }}">
+                {% else %}
+                <img class="avatar" src="{% static 'images/passenger.svg' %}" alt="Нет фото">
+                {% endif %}
+            </td>
+            <td><strong>{{ passenger.full_name }}</strong></td>
+            <td>{{ passenger.phone }}</td>
+            <td><a href="mailto:{{ passenger.email }}">{{ passenger.email }}</a></td>
+            <td>{{ passenger.birth_date|date:"d.m.Y" }}</td>
+            <td class="link-actions">
+                <a href="{% url 'passenger_edit' passenger.pk %}">Изменить</a> |
+                <a class="del" href="{% url 'passenger_delete' passenger.pk %}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% else %}
+<p class="empty">Пассажиров пока нет. Нажмите «Добавить пассажира».</p>
+{% endif %}
+{% endblock %}

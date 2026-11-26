@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Билеты — Билетная касса{% endblock %}
+{% block header %}Билеты{% endblock %}
+{% block page_actions %}
+<a class="btn" href="{% url 'ticket_create' %}">Оформить билет</a>
+{% endblock %}
+
+{% block content %}
+{% if tickets %}
+<div class="table-wrap">
+    <table class="data">
+        <tr>
+            <th>№</th>
+            <th>Пассажир</th>
+            <th>Направление</th>
+            <th>Отправление</th>
+            <th>Место</th>
+            <th>Статус</th>
+            <th>Багаж</th>
+            <th>Итого</th>
+            <th></th>
+        </tr>
+        {% for ticket in tickets %}
+        <tr>
+            <td><a href="{% url 'ticket_detail' ticket.pk %}"><strong>{{ ticket.pk }}</strong></a></td>
+            <td>{{ ticket.passenger.full_name }}</td>
+            <td>{{ ticket.trip.from_city }} — {{ ticket.trip.to_city }}</td>
+            <td>{{ ticket.trip.departure_date|date:"d.m.Y" }} {{ ticket.trip.departure_time|time:"H:i" }}</td>
+            <td>{{ ticket.seat }}</td>
+            <td>
+                {% if ticket.status == 'paid' %}
+                <span class="badge badge-ok">оплачен</span>
+                {% elif ticket.status == 'cancelled' %}
+                <span class="badge badge-off">отменён</span>
+                {% else %}
+                <span class="badge badge-warn">забронирован</span>
+                {% endif %}
+            </td>
+            <td>{% if ticket.baggage %}да{% else %}нет{% endif %}</td>
+            <td><strong>{{ ticket.total|floatformat:2 }} ₽</strong></td>
+            <td class="link-actions">
+                <a href="{% url 'ticket_detail' ticket.pk %}">Просмотр</a> |
+                {% if ticket.status == 'booked' %}
+                <form method="post" action="{% url 'ticket_pay' ticket.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Оплатить</button>
+                </form> |
+                {% endif %}
+                {% if ticket.status != 'cancelled' %}
+                <form method="post" action="{% url 'ticket_refund' ticket.pk %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Вернуть</button>
+                </form> |
+                {% endif %}
+                <a href="{% url 'ticket_edit' ticket.pk %}">Изменить</a> |
+                <a class="del" href="{% url 'ticket_delete' ticket.pk %}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% else %}
+<p class="empty">Билетов пока нет. <a href="{% url 'ticket_create' %}">Оформить первый</a></p>
+{% endif %}
+{% endblock %}

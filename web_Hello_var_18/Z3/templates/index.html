@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Рейсы — Билетная касса{% endblock %}
+{% block header %}Рейсы{% endblock %}
+{% block page_actions %}
+<a class="btn" href="{% url 'ticket_create' %}">Купить билет</a>
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">заказ билетов онлайн</p>
+        <h2>Билеты на междугородние автобусы</h2>
+        <p>Выберите подходящий рейс и оформите билет за пару минут.</p>
+    </div>
+</section>
+
+<div class="panel">
+    <h2>Ближайшие рейсы</h2>
+
+    {% if trips %}
+    <div class="table-wrap">
+        <table class="data">
+            <tr>
+                <th>Направление</th>
+                <th>Дата</th>
+                <th>Время</th>
+                <th>Автобус</th>
+                <th>В пути</th>
+                <th>Цена</th>
+                <th>Свободно</th>
+                <th></th>
+            </tr>
+            {% for trip in trips %}
+            <tr>
+                <td><strong>{{ trip.from_city }} — {{ trip.to_city }}</strong></td>
+                <td>{{ trip.departure_date|date:"d.m.Y" }}</td>
+                <td>{{ trip.departure_time|time:"H:i" }}</td>
+                <td>{{ trip.bus.model_name }}<br><span class="muted">{{ trip.bus.plate_number }}</span></td>
+                <td>{{ trip.travel_time|time:"H:i" }}</td>
+                <td>{{ trip.price|floatformat:2 }} ₽</td>
+                <td>{{ trip.free_seats }} из {{ trip.bus.seats }}</td>
+                <td><a href="{% url 'ticket_create' %}?trip={{ trip.pk }}">Выбрать</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% else %}
+    <p class="empty">Ближайших рейсов пока нет.</p>
+    {% endif %}
+</div>
+{% endblock %}

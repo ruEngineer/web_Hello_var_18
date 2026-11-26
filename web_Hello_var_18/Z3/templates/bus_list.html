@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Автобусы — Билетная касса{% endblock %}
+{% block header %}Автобусы (транспорт){% endblock %}
+{% block page_actions %}
+<a class="btn" href="{% url 'bus_create' %}">Добавить автобус</a>
+{% endblock %}
+
+{% block content %}
+{% if buses %}
+<div class="table-wrap">
+    <table class="data">
+        <tr>
+            <th>Фото</th>
+            <th>Марка и модель</th>
+            <th>Госномер</th>
+            <th>Мест</th>
+            <th>Техпаспорт</th>
+            <th>Рейсов</th>
+            <th></th>
+        </tr>
+        {% for bus in buses %}
+        <tr>
+            <td>
+                {% if bus.photo %}
+                <img class="scheme" src="{{ bus.photo.url }}" alt="Автобус {{ bus.model_name }}">
+                {% else %}
+                <img class="scheme" src="{% static 'images/route.svg' %}" alt="Фото не загружено">
+                {% endif %}
+            </td>
+            <td><strong>{{ bus.model_name }}</strong></td>
+            <td>{{ bus.plate_number }}</td>
+            <td>{{ bus.seats }}</td>
+            <td>
+                {% if bus.passport %}
+                <span class="badge badge-ok">{{ bus.passport.serial_number }}</span>
+                {% else %}
+                <span class="muted">нет</span>
+                {% endif %}
+            </td>
+            <td>{{ bus.trips_count }}</td>
+            <td class="link-actions">
+                <a href="{% url 'bus_edit' bus.pk %}">Изменить</a> |
+                <a class="del" href="{% url 'bus_delete' bus.pk %}">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% else %}
+<p class="empty">Автобусов пока нет. <a href="{% url 'bus_create' %}">Добавить первый</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+*.sqlite3-journal
+.idea/
+.venv/
+web_Hello_var_18/Z3/media/passengers/
+web_Hello_var_18/Z3/media/buses/
+web_Hello_var_18/Z3/media/passports/
+web_Hello_var_18/Z3/media/receipts/

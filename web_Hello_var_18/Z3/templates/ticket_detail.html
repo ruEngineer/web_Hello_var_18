@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Билет №{{ ticket.pk }} — Билетная касса{% endblock %}
+{% block header %}Билет №{{ ticket.pk }}{% endblock %}
+{% block page_actions %}
+<a class="btn" href="{% url 'ticket_edit' ticket.pk %}">Изменить</a>
+<a class="btn btn-light" href="{% url 'ticket_list' %}">К списку билетов</a>
+{% endblock %}
+
+{% block content %}
+<div class="detail-grid">
+    <section class="panel">
+        <h2>Пассажир</h2>
+        <div class="photo-box">
+            {% if ticket.passenger.photo %}
+            <img src="{{ ticket.passenger.photo.url }}" alt="Фото пассажира">
+            {% else %}
+            <img src="{% static 'images/passenger.svg' %}" alt="Фото не загружено">
+            {% endif %}
+            <div>
+                <strong>{{ ticket.passenger.full_name }}</strong><br>
+                <span class="muted">{{ ticket.passenger.phone }}</span><br>
+                <span class="muted">{{ ticket.passenger.email }}</span>
+            </div>
+        </div>
+        <dl class="kv">
+            <div><dt>Дата рождения</dt><dd>{{ ticket.passenger.birth_date|date:"d.m.Y" }}</dd></div>
+        </dl>
+    </section>
+
+    <section class="panel">
+        <h2>Поездка</h2>
+        <dl class="kv">
+            <div><dt>Направление</dt><dd>{{ ticket.trip.from_city }} — {{ ticket.trip.to_city }}</dd></div>
+            <div><dt>Дата и время</dt><dd>{{ ticket.trip.departure_date|date:"d.m.Y" }} в {{ ticket.trip.departure_time|time:"H:i" }}</dd></div>
+            <div><dt>Автобус</dt><dd>{{ ticket.trip.bus.model_name }} ({{ ticket.trip.bus.plate_number }})</dd></div>
+            <div><dt>Место</dt><dd>{{ ticket.seat }} из {{ ticket.trip.bus.seats }}</dd></div>
+            <div>
+                <dt>Статус</dt>
+                <dd>
+                    {% if ticket.status == 'paid' %}
+                    <span class="badge badge-ok">оплачен</span>
+                    {% elif ticket.status == 'cancelled' %}
+                    <span class="badge badge-off">отменён</span>
+                    {% else %}
+                    <span class="badge badge-warn">забронирован</span>
+                    {% endif %}
+                </dd>
+            </div>
+            <div><dt>Багаж</dt><dd>{% if ticket.baggage %}да (+300 ₽){% else %}нет{% endif %}</dd></div>
+            {% if ticket.paid_at %}
+            <div><dt>Оплачен</dt><dd>{{ ticket.paid_at|date:"d.m.Y H:i" }}</dd></div>
+            {% endif %}
+            {% if ticket.refunded_at %}
+            <div><dt>Возврат</dt><dd>{{ ticket.refunded_at|date:"d.m.Y H:i" }}</dd></div>
+            {% endif %}
+        </dl>
+
+        {% if ticket.status == 'cancelled' %}
+        <div class="big-total">
+            <span>Возврат оформлен</span>
+            <strong>{{ ticket.refund_amount|floatformat:2 }} ₽</strong>
+        </div>
+        {% else %}
+        <div class="big-total">
+            <span>{% if ticket.status == 'paid' %}Оплачено{% else %}Итого к оплате{% endif %}</span>
+            <strong>{{ ticket.total|floatformat:2 }} ₽</strong>
+        </div>
+        {% endif %}
+        <p class="muted" style="margin: 8px 0 0; font-size: 12px;">
+            Цена рейса: {{ ticket.trip.price|floatformat:2 }} ₽. Стоимость багажа учтена автоматически.
+        </p>
+    </section>
+</div>
+
+<section class="panel" style="margin-top: 18px;">
+    <h2>Транспорт и техпаспорт</h2>
+    {% if passport %}
+    <dl class="kv">
+        <div><dt>Марка и модель</dt><dd>{{ ticket.trip.bus.model_name }}</dd></div>
+        <div><dt>Госномер</dt><dd>{{ ticket.trip.bus.plate_number }}</dd></div>
+        <div><dt>Количество мест</dt><dd>{{ ticket.trip.bus.seats }}</dd></div>
+        <div><dt>Серийный номер техпаспорта</dt><dd>{{ passport.serial_number }}</dd></div>
+        <div><dt>Действителен до</dt><dd>{{ passport.valid_until|date:"d.m.Y" }}</dd></div>
+        <div>
+            <dt>Регистрация в ГИБДД</dt>
+            <dd>
+                {% if passport.registered %}
+                <span class="badge badge-ok">зарегистрирован</span>
+                {% else %}
+                <span class="badge badge-off">не зарегистрирован</span>
+                {% endif %}
+            </dd>
+        </div>
+    </dl>
+    {% else %}
+    <p class="muted">На автобус не оформлен техпаспорт.</p>
+    {% endif %}
+</section>
+
+<div class="actions">
+    {% if ticket.status == 'booked' %}
+    <form method="post" action="{% url 'ticket_pay' ticket.pk %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn">Оплатить</button>
+    </form>
+    {% endif %}
+    {% if ticket.status != 'cancelled' %}
+    <form method="post" action="{% url 'ticket_refund' ticket.pk %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn">Вернуть билет</button>
+    </form>
+    {% endif %}
+    <a class="btn btn-light" href="{% url 'ticket_delete' ticket.pk %}">Удалить билет</a>
+    <a class="btn btn-light" href="{% url 'ticket_create' %}">Оформить ещё один</a>
+</div>
+{% endblock %}
