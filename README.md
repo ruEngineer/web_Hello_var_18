@@ -5,7 +5,7 @@
 ## 🛠 Общий стек технологий
 *   **Язык:** Python 3.12+
 *   **Фреймворк:** Django 4.x / 5.x
-*   **Базы данных:** SQLite (для задач 1, 2.1, 2.2, 2.3), PostgreSQL (для задачи 2.4)
+*   **Базы данных:** SQLite (для приложений 1, 2.1, 2.2, 2.3), PostgreSQL (для приложений 2.4 и Z3)
 *   **Работа с файлами:** `openpyxl` (для чтения/записи Excel-файлов в приложении Z1), `Pillow` (для ImageField в приложении Z3)
 
 ---
@@ -128,6 +128,10 @@ python manage.py runserver
 
 Назначение: заказ билетов на междугородние автобусы.
 
+База данных: PostgreSQL, база `z3_db`. Параметры подключения можно переопределить
+переменными окружения `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`,
+`POSTGRES_HOST`, `POSTGRES_PORT`.
+
 Структура модели:
 
     Passenger (Пассажир) — справочник пассажиров.
@@ -166,6 +170,9 @@ python manage.py runserver
 Запуск:
 
 bash
+
+# один раз: создать базу PostgreSQL (если её ещё нет)
+PGPASSWORD=admin createdb -h 127.0.0.1 -U postgres -E UTF8 z3_db
 
 cd Z3
 python manage.py migrate

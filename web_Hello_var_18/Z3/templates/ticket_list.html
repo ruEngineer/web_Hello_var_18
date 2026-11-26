@@ -37,6 +37,12 @@
                 {% else %}
                 <span class="badge badge-warn">забронирован</span>
                 {% endif %}
+                {% if ticket.paid_at %}
+                <br><span class="muted">{{ ticket.paid_at|date:"d.m.Y H:i" }}</span>
+                {% endif %}
+                {% if ticket.refunded_at %}
+                <br><span class="muted">возврат: {{ ticket.refunded_at|date:"d.m.Y H:i" }} · {{ ticket.refund_amount|floatformat:2 }} ₽</span>
+                {% endif %}
             </td>
             <td>{% if ticket.baggage %}да{% else %}нет{% endif %}</td>
             <td><strong>{{ ticket.total|floatformat:2 }} ₽</strong></td>

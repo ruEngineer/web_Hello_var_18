@@ -8,6 +8,7 @@ from datetime import date, time, timedelta
 from decimal import Decimal
 
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 from Z3app.models import Bus, BusPassport, Passenger, Ticket, Trip
 
@@ -77,9 +78,13 @@ class Command(BaseCommand):
             )
             trips.append(trip)
 
+        now = timezone.now()
         Ticket.objects.get_or_create(
             passenger=passengers[0], trip=trips[0],
-            defaults={'seat': 5, 'status': 'paid', 'baggage': True},
+            defaults={
+                'seat': 5, 'status': 'paid', 'baggage': True,
+                'paid_at': now - timedelta(days=1),
+            },
         )
         Ticket.objects.get_or_create(
             passenger=passengers[1], trip=trips[0],
@@ -87,9 +92,31 @@ class Command(BaseCommand):
         )
         Ticket.objects.get_or_create(
             passenger=passengers[2], trip=trips[1],
-            defaults={'seat': 12, 'status': 'paid'},
+            defaults={
+                'seat': 12, 'status': 'paid',
+                'paid_at': now - timedelta(days=2),
+            },
+        )
+        # Демонстрационный возвращённый билет.
+        Ticket.objects.get_or_create(
+            passenger=passengers[2], trip=trips[0],
+            defaults={
+                'seat': 1,
+                'status': 'cancelled',
+                'refunded_at': now - timedelta(hours=3),
+                'refund_amount': Decimal('850.00'),
+            },
         )
 
+        # Заполняем даты у билетов, созданных до появления этих полей.
+        for ticket in Ticket.objects.filter(status='paid', paid_at__isnull=True):
+            ticket.paid_at = ticket.created_at or now
+            ticket.save(update_fields=['paid_at'])
+        for ticket in Ticket.objects.filter(status='cancelled', refunded_at__isnull=True):
+            ticket.refunded_at = ticket.created_at or now
+            ticket.save(update_fields=['refunded_at'])
+
         self.stdout.write(self.style.SUCCESS(
-            'Демо-данные добавлены: 3 пассажира, 3 автобуса, 2 техпаспорта, 4 рейса, 3 билета.'
+            'Демо-данные добавлены: 3 пассажира, 3 автобуса, 2 техпаспорта, '
+            '4 рейса, оплаченные, забронированный и возвращённый билеты.'
         ))

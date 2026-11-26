@@ -49,12 +49,26 @@
                 </dd>
             </div>
             <div><dt>Багаж</dt><dd>{% if ticket.baggage %}да (+300 ₽){% else %}нет{% endif %}</dd></div>
-            {% if ticket.paid_at %}
-            <div><dt>Оплачен</dt><dd>{{ ticket.paid_at|date:"d.m.Y H:i" }}</dd></div>
-            {% endif %}
-            {% if ticket.refunded_at %}
-            <div><dt>Возврат</dt><dd>{{ ticket.refunded_at|date:"d.m.Y H:i" }}</dd></div>
-            {% endif %}
+            <div>
+                <dt>Оплата</dt>
+                <dd>
+                    {% if ticket.paid_at %}
+                    {{ ticket.paid_at|date:"d.m.Y H:i" }}
+                    {% else %}
+                    не оплачен
+                    {% endif %}
+                </dd>
+            </div>
+            <div>
+                <dt>Возврат</dt>
+                <dd>
+                    {% if ticket.refunded_at %}
+                    {{ ticket.refunded_at|date:"d.m.Y H:i" }} · {{ ticket.refund_amount|floatformat:2 }} ₽
+                    {% else %}
+                    не оформлен
+                    {% endif %}
+                </dd>
+            </div>
         </dl>
 
         {% if ticket.status == 'cancelled' %}
